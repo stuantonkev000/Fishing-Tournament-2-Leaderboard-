@@ -62,4 +62,90 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45
+            background: linear-gradient(45deg, #ff69b4, purple, orange);
+            z-index: -1;
+            transition: left 0.3s ease; /* Faster transition */
+            border-radius: 4px; /* Rounded corners for the gradient */
+        }
+        button:hover:before {
+            left: 0;
+        }
+        .pulsate {
+            animation: pulsate 15s infinite; /* Really slow pulsation */
+        }
+        @keyframes pulsate {
+            0% {
+                color: #ff69b4; /* Pink */
+            }
+            25% {
+                color: purple;
+            }
+            50% {
+                color: orange;
+            }
+            75% {
+                color: #00ffff; /* Light Blue */
+            }
+            100% {
+                color: #ff69b4; /* Pink */
+            }
+        }
+        .heading-pulsate {
+            animation: headingPulsate 15s infinite; /* Really slow pulsation */
+        }
+        @keyframes headingPulsate {
+            0% {
+                color: #ff69b4; /* Pink */
+            }
+            25% {
+                color: purple;
+            }
+            50% {
+                color: orange;
+            }
+            75% {
+                color: #00ffff; /* Light Blue */
+            }
+            100% {
+                color: #ff69b4; /* Pink */
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="heading-pulsate">Fishing Tournament 2</h1> <!-- Updated heading with animation -->
+    <div id="userForm">
+        <h2>Register</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button id="registerButton">Register</button>
+    </div>
+    <div id="loginForm">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button id="loginButton">Login</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Total Points</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboard">
+            <!-- Leaderboard entries will be dynamically added here -->
+        </tbody>
+    </table>
+    <div id="catchForm">
+        <h2>Add Catch</h2>
+        <input type="number" id="bluegill" placeholder="Number of Bluegill">
+        <input type="number" id="bass" placeholder="Number of Bass">
+        <input type="number" id="catfish" placeholder="Number of Catfish">
+        <input type="number" id="weight" placeholder="Total Weight (optional)">
+        <button id="addCatchButton">Add Catch</button>
+    </div>
+    <script src="leaderboard.js"></script>
+</body>
+</html>
