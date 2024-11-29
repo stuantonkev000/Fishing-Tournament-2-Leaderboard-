@@ -27,7 +27,7 @@
         tr:nth-child(even) {
             background-color: #444;
         }
-        #userForm, #loginForm, #catchForm, #hostLoginForm {
+        #userForm, #loginForm, #catchForm {
             margin-bottom: 20px;
         }
         input[type="text"], input[type="password"], input[type="number"], input[type="pin"] {
@@ -156,41 +156,6 @@
         <input type="password" id="hostPin" placeholder="Enter Pin">
         <button id="hostLoginButton">Login as Host</button>
     </div>
-    <script>
-        document.getElementById('hostLoginButton').addEventListener('click', function() {
-            const pin = document.getElementById('hostPin').value;
-            if (pin === "The Zero Club") {
-                alert("Access granted! You can now delete players from the leaderboard.");
-                document.querySelectorAll('.hidden').forEach(el => el.classList.remove('hidden'));
-
-                // Add delete buttons for each row
-                document.querySelectorAll('#leaderboard tr').forEach(row => {
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Delete';
-                    deleteButton.onclick = function() {
-                        row.remove();
-                    };
-                    const td = document.createElement('td');
-                    td.appendChild(deleteButton);
-                    row.appendChild(td);
-                });
-            } else {
-                alert("Incorrect pin. Access denied.");
-            }
-        });
-
-        // Function to add a row to the leaderboard (for demonstration purposes)
-        function addRow(rank, name, points) {
-            const tbody = document.getElementById('leaderboard');
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${rank}</td><td>${name}</td><td>${points}</td>`;
-            tbody.appendChild(tr);
-        }
-
-        // Example rows (for demonstration purposes)
-        addRow(1, 'Alice', 150);
-        addRow(2, 'Bob', 120);
-        addRow(3, 'Charlie', 100);
-    </script>
+    <script src="leaderboard.js"></script>
 </body>
 </html>
