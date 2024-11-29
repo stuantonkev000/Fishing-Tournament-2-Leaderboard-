@@ -13,14 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Add delete buttons for each row
             document.querySelectorAll('#leaderboard tr').forEach(row => {
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.onclick = function() {
-                    row.remove();
-                };
-                const td = document.createElement('td');
-                td.appendChild(deleteButton);
-                row.appendChild(td);
+                if (!row.querySelector('button')) { // Check if delete button is already present
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.onclick = function() {
+                        row.remove();
+                    };
+                    const td = document.createElement('td');
+                    td.appendChild(deleteButton);
+                    row.appendChild(td);
+                }
             });
         } else {
             alert("Incorrect pin. Access denied.");
@@ -64,3 +66,4 @@ document.addEventListener('DOMContentLoaded', function() {
         alert(`Catch added: Bluegill: ${bluegill}, Bass: ${bass}, Catfish: ${catfish}, Weight: ${weight}`);
     });
 });
+
