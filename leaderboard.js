@@ -4,6 +4,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const addCatchButton = document.getElementById('addCatchButton');
     const hostLoginButton = document.getElementById('hostLoginButton');
 
+    // Function to add a row to the leaderboard
+    function addRow(rank, name, points) {
+        const tbody = document.getElementById('leaderboard');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${rank}</td><td>${name}</td><td>${points}</td><td class="hidden"></td>`;
+        tbody.appendChild(tr);
+    }
+
+    // Example rows (for demonstration purposes)
+    addRow(1, 'Alice', 150);
+    addRow(2, 'Bob', 120);
+    addRow(3, 'Charlie', 100);
+
     // Event listener for the host login button
     hostLoginButton.addEventListener('click', function() {
         const pin = document.getElementById('hostPin').value;
@@ -29,19 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Function to add a row to the leaderboard
-    function addRow(rank, name, points) {
-        const tbody = document.getElementById('leaderboard');
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${rank}</td><td>${name}</td><td>${points}</td><td class="hidden"></td>`;
-        tbody.appendChild(tr);
-    }
-
-    // Example rows (for demonstration purposes)
-    addRow(1, 'Alice', 150);
-    addRow(2, 'Bob', 120);
-    addRow(3, 'Charlie', 100);
-
     // Example event listeners (you can customize these further as needed)
     registerButton.addEventListener('click', function() {
         const username = document.getElementById('username').value;
@@ -66,4 +66,3 @@ document.addEventListener('DOMContentLoaded', function() {
         alert(`Catch added: Bluegill: ${bluegill}, Bass: ${bass}, Catfish: ${catfish}, Weight: ${weight}`);
     });
 });
-
