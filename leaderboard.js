@@ -64,4 +64,3 @@ document.addEventListener('DOMContentLoaded', function() {
         alert(`Catch added: Bluegill: ${bluegill}, Bass: ${bass}, Catfish: ${catfish}, Weight: ${weight}`);
     });
 });
-
