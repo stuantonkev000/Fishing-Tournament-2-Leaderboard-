@@ -27,10 +27,10 @@
         tr:nth-child(even) {
             background-color: #444;
         }
-        #userForm, #loginForm, #catchForm {
+        #userForm, #loginForm, #catchForm, #hostLoginForm {
             margin-bottom: 20px;
         }
-        input[type="text"], input[type="password"], input[type="number"] {
+        input[type="text"], input[type="password"], input[type="number"], input[type="pin"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -111,6 +111,9 @@
                 color: #ff69b4; /* Pink */
             }
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -133,6 +136,7 @@
                 <th>Rank</th>
                 <th>Name</th>
                 <th>Total Points</th>
+                <th class="hidden">Delete</th> <!-- Added delete column, hidden initially -->
             </tr>
         </thead>
         <tbody id="leaderboard">
@@ -147,6 +151,46 @@
         <input type="number" id="weight" placeholder="Total Weight (optional)">
         <button id="addCatchButton">Add Catch</button>
     </div>
-    <script src="leaderboard.js"></script>
+    <div id="hostLoginForm">
+        <h2>Host Login</h2>
+        <input type="password" id="hostPin" placeholder="Enter Pin">
+        <button id="hostLoginButton">Login as Host</button>
+    </div>
+    <script>
+        document.getElementById('hostLoginButton').addEventListener('click', function() {
+            const pin = document.getElementById('hostPin').value;
+            if (pin === "The Zero Club") {
+                alert("Access granted! You can now delete players from the leaderboard.");
+                document.querySelectorAll('.hidden').forEach(el => el.classList.remove('hidden'));
+
+                // Add delete buttons for each row
+                document.querySelectorAll('#leaderboard tr').forEach(row => {
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.onclick = function() {
+                        row.remove();
+                    };
+                    const td = document.createElement('td');
+                    td.appendChild(deleteButton);
+                    row.appendChild(td);
+                });
+            } else {
+                alert("Incorrect pin. Access denied.");
+            }
+        });
+
+        // Function to add a row to the leaderboard (for demonstration purposes)
+        function addRow(rank, name, points) {
+            const tbody = document.getElementById('leaderboard');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${rank}</td><td>${name}</td><td>${points}</td>`;
+            tbody.appendChild(tr);
+        }
+
+        // Example rows (for demonstration purposes)
+        addRow(1, 'Alice', 150);
+        addRow(2, 'Bob', 120);
+        addRow(3, 'Charlie', 100);
+    </script>
 </body>
 </html>
