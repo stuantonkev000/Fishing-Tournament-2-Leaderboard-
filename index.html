@@ -62,14 +62,14 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, #ff69b4, purple, orange, #00ffff); /* Updated gradient with light blue */
+            background: linear-gradient(45deg, #ff69b4, purple, orange); /* Pink, Purple, Orange */
             z-index: -1;
             transition: left 0.3s ease; /* Faster transition */
             border-radius: 4px; /* Rounded corners for the gradient */
         }
         button:hover:before {
             left: 0;
-            background: linear-gradient(45deg, #ff69b4, purple, orange, #00ffff); /* Hover effect with light blue */
+            background: linear-gradient(45deg, #ff69b4, purple, orange); /* Hover effect */
         }
         .pulsate {
             animation: pulsate 15s infinite; /* Really slow pulsation */
@@ -85,7 +85,7 @@
                 color: orange;
             }
             75% {
-                color: #00ffff; /* Light Blue */
+                color: #ff69b4; /* Pink */
             }
             100% {
                 color: #ff69b4; /* Pink */
@@ -105,15 +105,11 @@
                 color: orange;
             }
             75% {
-                color: #00ffff; /* Light Blue */
+                color: #ff69b4; /* Pink */
             }
             100% {
                 color: #ff69b4; /* Pink */
             }
-        }
-        .clear-button-container {
-            text-align: right;
-            margin-top: 20px;
         }
     </style>
 </head>
@@ -150,9 +146,6 @@
         <input type="number" id="catfish" placeholder="Number of Catfish">
         <input type="number" id="weight" placeholder="Total Weight (optional)">
         <button id="addCatchButton">Add Catch</button>
-    </div>
-    <div class="clear-button-container">
-        <button id="clearLeaderboardButton">Clear Leaderboard</button> <!-- Positioned on the right -->
     </div>
     <script src="leaderboard.js"></script>
 </body>
