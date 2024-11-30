@@ -4,18 +4,53 @@ document.addEventListener('DOMContentLoaded', function() {
     const addCatchButton = document.getElementById('addCatchButton');
     const hostLoginButton = document.getElementById('hostLoginButton');
 
-    // Function to add a row to the leaderboard
-    function addRow(rank, name, points) {
-        const tbody = document.getElementById('leaderboard');
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${rank}</td><td>${name}</td><td>${points}</td><td class="hidden"></td>`;
-        tbody.appendChild(tr);
-    }
+    // Dummy storage for user data
+    const users = [];
+    let loggedInUser = null;
 
-    // Example rows (for demonstration purposes)
-    addRow(1, 'Alice', 150);
-    addRow(2, 'Bob', 120);
-    addRow(3, 'Charlie', 100);
+    // Event listener for the register button
+    registerButton.addEventListener('click', function() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (username && password) {
+            users.push({ username, password });
+            alert(`User ${username} registered!`);
+        } else {
+            alert('Please enter a username and password.');
+        }
+    });
+
+    // Event listener for the login button
+    loginButton.addEventListener('click', function() {
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+
+        const user = users.find(u => u.username === username && u.password === password);
+        if (user) {
+            loggedInUser = user;
+            document.getElementById('catchForm').classList.remove('hidden');
+            alert(`User ${username} logged in!`);
+        } else {
+            alert('Invalid username or password.');
+        }
+    });
+
+    // Event listener for the add catch button
+    addCatchButton.addEventListener('click', function() {
+        if (!loggedInUser) {
+            alert('Please log in first.');
+            return;
+        }
+
+        const bluegill = document.getElementById('bluegill').value;
+        const bass = document.getElementById('bass').value;
+        const catfish = document.getElementById('catfish').value;
+        const weight = document.getElementById('weight').value;
+
+        addRow(loggedInUser.username, calculatePoints(bluegill, bass, catfish, weight));
+        alert(`Catch added: Bluegill: ${bluegill}, Bass: ${bass}, Catfish: ${catfish}, Weight: ${weight}`);
+    });
 
     // Event listener for the host login button
     hostLoginButton.addEventListener('click', function() {
@@ -42,27 +77,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Example event listeners (you can customize these further as needed)
-    registerButton.addEventListener('click', function() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        // Handle registration logic here
-        alert(`User ${username} registered!`);
-    });
+    // Function to add a row to the leaderboard
+    function addRow(name, points) {
+        const tbody = document.getElementById('leaderboard');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td></td><td>${name}</td><td>${points}</td><td class="hidden"></td>`;
+        tbody.appendChild(tr);
+        updateRanks();
+    }
 
-    loginButton.addEventListener('click', function() {
-        const username = document.getElementById('loginUsername').value;
-        const password = document.getElementById('loginPassword').value;
-        // Handle login logic here
-        alert(`User ${username} logged in!`);
-    });
-
-    addCatchButton.addEventListener('click', function() {
-        const bluegill = document.getElementById('bluegill').value;
-        const bass = document.getElementById('bass').value;
-        const catfish = document.getElementById('catfish').value;
-        const weight = document.getElementById('weight').value;
-        // Handle adding catch logic here
-        alert(`Catch added: Bluegill: ${bluegill}, Bass: ${bass}, Catfish: ${catfish}, Weight: ${weight}`);
-    });
-});
+    // Function to update ranks
+    function updateRanks() {
+        const rows = document.querySelectorAll('#leaderboard
