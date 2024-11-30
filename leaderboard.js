@@ -52,22 +52,26 @@ function addCatch() {
     }
 }
 
-function calculatePoints(user) {
-    return user.catches.reduce((total, catchEntry) => total + catchEntry.bluegill * 1 + catchEntry.bass * 5 + catchEntry.catfish * 10, 0);
+function calculatePoints(catchEntry) {
+    return catchEntry.bluegill * 1 + catchEntry.bass * 5 + catchEntry.catfish * 10;
+}
+
+function calculateTotalPoints(user) {
+    return user.catches.reduce((total, catchEntry) => total + calculatePoints(catchEntry), 0);
 }
 
 function updateLeaderboard() {
     const leaderboard = document.getElementById('leaderboard');
     leaderboard.innerHTML = '';
 
-    users.sort((a, b) => calculatePoints(b) - calculatePoints(a)).forEach((user, index) => {
+    users.sort((a, b) => calculateTotalPoints(b) - calculateTotalPoints(a)).forEach((user, index) => {
         user.catches.forEach((catchEntry, catchIndex) => {
             const row = document.createElement('tr');
             const pulsateClass = index < 3 ? 'pulsate' : '';
             row.innerHTML = `
                 <td class="${pulsateClass}">${index + 1}</td>
                 <td class="${pulsateClass}">${user.username}</td>
-                <td class="${pulsateClass}">${catchEntry.bluegill * 1 + catchEntry.bass * 5 + catchEntry.catfish * 10}</td>
+                <td class="${pulsateClass}">${calculatePoints(catchEntry)}</td>
                 ${user.username === currentUser?.username ? `<td><button onclick="deleteCatch('${user.username}', ${catchIndex})">Delete</button></td>` : '<td class="hidden"></td>'}
             `;
             leaderboard.appendChild(row);
