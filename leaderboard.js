@@ -1,91 +1,109 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const registerButton = document.getElementById('registerButton');
-    const loginButton = document.getElementById('loginButton');
-    const addCatchButton = document.getElementById('addCatchButton');
-    const hostLoginButton = document.getElementById('hostLoginButton');
+const users = JSON.parse(localStorage.getItem('users')) || [];
+let currentUser = null;
 
-    // Dummy storage for user data
-    const users = [];
-    let loggedInUser = null;
+document.getElementById('registerButton').addEventListener('click', register);
+document.getElementById('loginButton').addEventListener('click', login);
+document.getElementById('addCatchButton').addEventListener('click', addCatch);
+document.getElementById('hostLoginButton').addEventListener('click', hostLogin);
 
-    // Event listener for the register button
-    registerButton.addEventListener('click', function() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+function register() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
 
-        if (username && password) {
-            users.push({ username, password });
-            alert(`User ${username} registered!`);
-        } else {
-            alert('Please enter a username and password.');
-        }
-    });
-
-    // Event listener for the login button
-    loginButton.addEventListener('click', function() {
-        const username = document.getElementById('loginUsername').value;
-        const password = document.getElementById('loginPassword').value;
-
-        const user = users.find(u => u.username === username && u.password === password);
-        if (user) {
-            loggedInUser = user;
-            document.getElementById('catchForm').classList.remove('hidden');
-            alert(`User ${username} logged in!`);
-        } else {
-            alert('Invalid username or password.');
-        }
-    });
-
-    // Event listener for the add catch button
-    addCatchButton.addEventListener('click', function() {
-        if (!loggedInUser) {
-            alert('Please log in first.');
-            return;
-        }
-
-        const bluegill = document.getElementById('bluegill').value;
-        const bass = document.getElementById('bass').value;
-        const catfish = document.getElementById('catfish').value;
-        const weight = document.getElementById('weight').value;
-
-        addRow(loggedInUser.username, calculatePoints(bluegill, bass, catfish, weight));
-        alert(`Catch added: Bluegill: ${bluegill}, Bass: ${bass}, Catfish: ${catfish}, Weight: ${weight}`);
-    });
-
-    // Event listener for the host login button
-    hostLoginButton.addEventListener('click', function() {
-        const pin = document.getElementById('hostPin').value;
-        if (pin === "The Zero Club") {
-            alert("Access granted! You can now delete players from the leaderboard.");
-            document.querySelectorAll('.hidden').forEach(el => el.classList.remove('hidden'));
-
-            // Add delete buttons for each row
-            document.querySelectorAll('#leaderboard tr').forEach(row => {
-                if (!row.querySelector('button')) { // Check if delete button is already present
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Delete';
-                    deleteButton.onclick = function() {
-                        row.remove();
-                    };
-                    const td = document.createElement('td');
-                    td.appendChild(deleteButton);
-                    row.appendChild(td);
-                }
-            });
-        } else {
-            alert("Incorrect pin. Access denied.");
-        }
-    });
-
-    // Function to add a row to the leaderboard
-    function addRow(name, points) {
-        const tbody = document.getElementById('leaderboard');
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td></td><td>${name}</td><td>${points}</td><td class="hidden"></td>`;
-        tbody.appendChild(tr);
-        updateRanks();
+    if (username && password) {
+        users.push({ username, password, bluegill: 0, bass: 0, catfish: 0, totalWeight: 0 });
+        localStorage.setItem('users', JSON.stringify(users));
+        document.getElementById('userForm').style.display = 'none';
+        document.getElementById('loginForm').style.display = 'block';
+    } else {
+        alert("Please enter both username and password.");
     }
+}
 
-    // Function to update ranks
-    function updateRanks() {
-        const rows = document.querySelectorAll('#leaderboard
+function login() {
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+
+    currentUser = users.find(user => user.username === username && user.password === password);
+
+    if (currentUser) {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('catchForm').style.display = 'block';
+    } else {
+        alert("Incorrect username or password.");
+    }
+}
+
+function addCatch() {
+    if (currentUser) {
+        const bluegill = parseInt(document.getElementById('bluegill').value) || 0;
+        const bass = parseInt(document.getElementById('bass').value) || 0;
+        const catfish = parseInt(document.getElementById('catfish').value) || 0;
+        const weight = parseInt(document.getElementById('weight').value) || 0;
+
+        currentUser.bluegill += bluegill;
+        currentUser.bass += bass;
+        currentUser.catfish += catfish;
+        currentUser.totalWeight += weight;
+
+        localStorage.setItem('users', JSON.stringify(users));
+        updateLeaderboard();
+    } else {
+        alert("You must be logged in to add a catch.");
+    }
+}
+
+function calculatePoints(user) {
+    return user.bluegill * 1 + user.bass * 5 + user.catfish * 10;
+}
+
+function updateLeaderboard() {
+    const leaderboard = document.getElementById('leaderboard');
+    leaderboard.innerHTML = '';
+
+    users.sort((a, b) => calculatePoints(b) - calculatePoints(a)).forEach((user, index) => {
+        const row = document.createElement('tr');
+        const pulsateClass = index < 3 ? 'pulsate' : '';
+        row.innerHTML = `
+            <td class="${pulsateClass}">${index + 1}</td>
+            <td class="${pulsateClass}" onclick="showDetails('${user.username}')">${user.username}</td>
+            <td class="${pulsateClass}">${calculatePoints(user)}</td>
+            <td class="hidden"><button onclick="deleteUser('${user.username}')">Delete</button></td>
+        `;
+        leaderboard.appendChild(row);
+    });
+}
+
+function showDetails(username) {
+    const user = users.find(user => user.username === username);
+
+    if (user) {
+        alert(`
+            Bluegill: ${user.bluegill}
+            Bass: ${user.bass}
+            Catfish: ${user.catfish}
+            Total Weight: ${user.totalWeight}
+        `);
+    }
+}
+
+function hostLogin() {
+    const pin = document.getElementById('hostPin').value;
+    if (pin === "The Zero Club") {
+        alert("Access granted! You can now delete players from the leaderboard.");
+        document.querySelectorAll('.hidden').forEach(el => el.classList.remove('hidden'));
+    } else {
+        alert("Incorrect pin. Access denied.");
+    }
+}
+
+function deleteUser(username) {
+    const userIndex = users.findIndex(user => user.username === username);
+    if (userIndex !== -1) {
+        users.splice(userIndex, 1);
+        localStorage.setItem('users', JSON.stringify(users));
+        updateLeaderboard();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', updateLeaderboard);
