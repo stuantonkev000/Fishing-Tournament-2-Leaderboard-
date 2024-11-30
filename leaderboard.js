@@ -4,6 +4,7 @@ let currentUser = null;
 document.getElementById('registerButton').addEventListener('click', register);
 document.getElementById('loginButton').addEventListener('click', login);
 document.getElementById('addCatchButton').addEventListener('click', addCatch);
+document.getElementById('hostLoginButton').addEventListener('click', hostLogin);
 
 function register() {
     const username = document.getElementById('username').value;
@@ -93,6 +94,25 @@ function showDetails(username) {
     }
 }
 
+function hostLogin() {
+    const pin = document.getElementById('hostPin').value;
+    if (pin === "The Zero Club") {
+        alert("Access granted! You can now delete players from the leaderboard.");
+        document.querySelectorAll('.hidden').forEach(el => el.classList.remove('hidden'));
+    } else {
+        alert("Incorrect pin. Access denied.");
+    }
+}
+
+function deleteUser(username) {
+    const userIndex = users.findIndex(user => user.username === username);
+    if (userIndex !== -1) {
+        users.splice(userIndex, 1);
+        localStorage.setItem('users', JSON.stringify(users));
+        updateLeaderboard();
+    }
+}
+
 function deleteCatch(username, catchIndex) {
     const user = users.find(user => user.username === username);
     if (user) {
@@ -103,4 +123,3 @@ function deleteCatch(username, catchIndex) {
 }
 
 document.addEventListener('DOMContentLoaded', updateLeaderboard);
-
