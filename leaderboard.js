@@ -4,8 +4,7 @@ let currentUser = null;
 document.getElementById('registerButton').addEventListener('click', register);
 document.getElementById('loginButton').addEventListener('click', login);
 document.getElementById('addCatchButton').addEventListener('click', addCatch);
-document.getElementById('deleteCatchButton').addEventListener('click', deleteCatch);
-document.getElementById('deleteAccountButton').addEventListener('click', deleteAccount); // Add delete account button event listener
+document.getElementById('deleteCatchButton').addEventListener('click', deleteCatch); // Add delete button event listener
 
 function register() {
     const username = document.getElementById('username').value;
@@ -66,23 +65,6 @@ function deleteCatch() {
         updateLeaderboard();
     } else {
         alert("You must be logged in to delete a catch.");
-    }
-}
-
-function deleteAccount() {
-    if (currentUser) {
-        const index = users.indexOf(currentUser);
-        if (index > -1) {
-            users.splice(index, 1);
-            localStorage.setItem('users', JSON.stringify(users));
-            currentUser = null;
-
-            document.getElementById('catchForm').style.display = 'none';
-            document.getElementById('userForm').style.display = 'block';
-        }
-        updateLeaderboard();
-    } else {
-        alert("You must be logged in to delete your account.");
     }
 }
 
