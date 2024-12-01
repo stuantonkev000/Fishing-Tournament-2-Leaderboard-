@@ -46,7 +46,7 @@
             background-color: #333;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 4px; /* Rounded corners for the button */
             cursor: pointer;
             overflow: hidden;
             position: relative;
@@ -64,18 +64,18 @@
             height: 100%;
             background: linear-gradient(45deg, #ff69b4, purple, orange);
             z-index: -1;
-            transition: left 0.3s ease;
-            border-radius: 4px;
+            transition: left 0.3s ease; /* Faster transition */
+            border-radius: 4px; /* Rounded corners for the gradient */
         }
         button:hover:before {
             left: 0;
         }
         .pulsate {
-            animation: pulsate 15s infinite;
+            animation: pulsate 15s infinite; /* Really slow pulsation */
         }
         @keyframes pulsate {
             0% {
-                color: #ff69b4;
+                color: #ff69b4; /* Pink */
             }
             25% {
                 color: purple;
@@ -84,18 +84,18 @@
                 color: orange;
             }
             75% {
-                color: #00ffff;
+                color: #00ffff; /* Light Blue */
             }
             100% {
-                color: #ff69b4;
+                color: #ff69b4; /* Pink */
             }
         }
         .heading-pulsate {
-            animation: headingPulsate 15s infinite;
+            animation: headingPulsate 15s infinite; /* Really slow pulsation */
         }
         @keyframes headingPulsate {
             0% {
-                color: #ff69b4;
+                color: #ff69b4; /* Pink */
             }
             25% {
                 color: purple;
@@ -104,16 +104,16 @@
                 color: orange;
             }
             75% {
-                color: #00ffff;
+                color: #00ffff; /* Light Blue */
             }
             100% {
-                color: #ff69b4;
+                color: #ff69b4; /* Pink */
             }
         }
     </style>
 </head>
 <body>
-    <h1 class="heading-pulsate">Fishing Tournament 2</h1>
+    <h1 class="heading-pulsate">Fishing Tournament 2</h1> <!-- Updated heading with animation -->
     <div id="userForm">
         <h2>Register</h2>
         <input type="text" id="username" placeholder="Username">
@@ -145,9 +145,7 @@
         <input type="number" id="catfish" placeholder="Number of Catfish">
         <input type="number" id="weight" placeholder="Total Weight (optional)">
         <button id="addCatchButton">Add Catch</button>
-        <button id="deleteCatchButton">Delete Catch</button> <!-- Added delete button -->
     </div>
     <script src="leaderboard.js"></script>
 </body>
 </html>
-
