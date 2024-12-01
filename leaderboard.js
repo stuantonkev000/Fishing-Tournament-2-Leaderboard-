@@ -4,15 +4,13 @@ let currentUser = null;
 document.getElementById('registerButton').addEventListener('click', register);
 document.getElementById('loginButton').addEventListener('click', login);
 document.getElementById('addCatchButton').addEventListener('click', addCatch);
-document.getElementById('deleteCatchButton').addEventListener('click', deleteCatch); // Add delete button event listener
 
 function register() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
     if (username && password) {
-        const hashedPassword = btoa(password);  // Simple base64 hash for demonstration purposes
-        users.push({ username, password: hashedPassword, bluegill: 0, bass: 0, catfish: 0, totalWeight: 0 });
+        users.push({ username, password, bluegill: 0, bass: 0, catfish: 0, totalWeight: 0 });
         localStorage.setItem('users', JSON.stringify(users));
         document.getElementById('userForm').style.display = 'none';
         document.getElementById('loginForm').style.display = 'block';
@@ -23,7 +21,7 @@ function register() {
 
 function login() {
     const username = document.getElementById('loginUsername').value;
-    const password = btoa(document.getElementById('loginPassword').value);  // Simple base64 hash for demonstration purposes
+    const password = document.getElementById('loginPassword').value;
 
     currentUser = users.find(user => user.username === username && user.password === password);
 
@@ -51,20 +49,6 @@ function addCatch() {
         updateLeaderboard();
     } else {
         alert("You must be logged in to add a catch.");
-    }
-}
-
-function deleteCatch() {
-    if (currentUser) {
-        currentUser.bluegill = 0;
-        currentUser.bass = 0;
-        currentUser.catfish = 0;
-        currentUser.totalWeight = 0;
-
-        localStorage.setItem('users', JSON.stringify(users));
-        updateLeaderboard();
-    } else {
-        alert("You must be logged in to delete a catch.");
     }
 }
 
@@ -102,3 +86,4 @@ function showDetails(username) {
 }
 
 document.addEventListener('DOMContentLoaded', updateLeaderboard);
+
